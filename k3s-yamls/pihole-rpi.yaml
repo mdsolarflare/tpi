@@ -10,6 +10,7 @@ spec:
     nameservers:
       # upstream DNS used by pihole.
       - 9.9.9.9
+      # - 1.1.1.1 cloudflare, maybe later i can configure this as a backup?
   containers:
     - name: pihole
       # https://hub.docker.com/r/pihole/pihole/tags
