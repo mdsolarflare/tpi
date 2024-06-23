@@ -43,6 +43,10 @@ helm version
 # Add MetalLB repository to Helm
 # TODO I think just install this way next time, if not the old method is here
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+# to delete 
+# kubectl get clusterroles,clusterrolebindings -n metallb-system
+# then delete the specific ones keeping the pods up
+# kubectl delete deployments,services,pods -n metallb-system --all
 #helm repo add metallb https://metallb.github.io/metallb
 
 # Check the added repository
