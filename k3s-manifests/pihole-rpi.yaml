@@ -123,13 +123,13 @@ spec:
         - name: pihole-regex
           mountPath: /etc/pihole/regex.list
           subPath: regex.list
-      resources:
-        requests:
-          memory: 128Mi
-          cpu: 100m
-        limits:
-          memory: 2Gi
-          cpu: 1
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2Gi
+            cpu: 1000m
       volumes:
         - name: pihole-adlists
           configMap:
