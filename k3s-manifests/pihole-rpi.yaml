@@ -1,6 +1,7 @@
 # actual docs - https://docs.pi-hole.net/main/origins/
 # my original reference - https://uthark.github.io/post/2021-10-06-running-pihole-kubernetes/
 # this didn't really work for me because it needs persistent volume storage.. and tbh i don't need that. lol. it's two files.
+# modified this to make the below - https://www.virtualthoughts.co.uk/2019/10/23/k8s-metallb-and-pihole/
 apiVersion: v1
 kind: Namespace
 metadata:
