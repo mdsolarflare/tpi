@@ -52,7 +52,9 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/confi
 #metallb/metallb 0.14.5          v0.14.5         A network load-balancer implementation for Kube...
 
 # I found that helm does not know what to do if this isn't set
-#export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+#sudo chmod 600 /etc/rancher/k3s/k3s.yaml - this just breaks it so no do this
+# helm doesn't work without this, but do i need helm? can i just use manifests?
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 # error looks like ->
 #$ helm upgrade --install metallb metallb/metallb --create-namespace --namespace metallb-system --wait
 #  Error: Kubernetes cluster unreachable: Get "http://localhost:8080/version": dial tcp [::1]:8080: connect: connection refused
@@ -69,25 +71,7 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/confi
 #MetalLB is now running in the cluster.
 
 # apply the configuration manifest, you need to change the IPs
-cat << 'EOF' | kubectl apply -f -
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: default-pool
-  namespace: metallb-system
-spec:
-  addresses:
-  - 192.168.0.120-192.168.0.130
----
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: default
-  namespace: metallb-system
-spec:
-  ipAddressPools:
-  - default-pool
-EOF
+kubectl apply -f ./k3s-yamls/metallb-default-pool.yaml
 
 # create namespace for argoCD
 kubectl create namespace argocd  
