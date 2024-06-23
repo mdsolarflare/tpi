@@ -142,7 +142,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: pihole-web-service
-  namespace : pihole-test
+  namespace : pihole
 spec:
   selector:
     app: pihole
