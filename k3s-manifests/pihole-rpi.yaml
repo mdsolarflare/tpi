@@ -73,7 +73,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pihole-deployment
-  namespace: pihole-test
+  namespace: pihole
   labels:
     app: pihole
 spec:
