@@ -1,0 +1,170 @@
+# actual docs - https://docs.pi-hole.net/main/origins/
+# my original reference - https://uthark.github.io/post/2021-10-06-running-pihole-kubernetes/
+# this didn't really work for me because it needs persistent volume storage.. and tbh i don't need that. lol. it's two files.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pihole
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-adlists
+  namespace: pihole
+data: # everything from reddit or here https://v.firebog.net/hosts/lists.php?type=tick
+  adlists.list: |
+    https://big.oisd.nl 
+    https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
+    https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+    https://v.firebog.net/hosts/static/w3kbl.txt
+    https://adaway.org/hosts.txt
+    https://v.firebog.net/hosts/AdguardDNS.txt
+    https://v.firebog.net/hosts/Admiral.txt
+    https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+    https://v.firebog.net/hosts/Easylist.txt
+    https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
+    https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+    https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
+    https://v.firebog.net/hosts/Easyprivacy.txt
+    https://v.firebog.net/hosts/Prigent-Ads.txt
+    https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
+    https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+    https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+    https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+    https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+    https://v.firebog.net/hosts/Prigent-Crypto.txt
+    https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+    https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
+    https://phishing.army/download/phishing_army_blocklist_extended.txt
+    https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+    https://v.firebog.net/hosts/RPiList-Malware.txt
+    https://v.firebog.net/hosts/RPiList-Phishing.txt
+    https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
+    https://raw.githubusercontent.com/AssoEchap/stalkerware-indicators/master/generated/hosts
+    https://urlhaus.abuse.ch/downloads/hostfile/
+    https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-regex
+  namespace: pihole
+data:
+  regex.list: |
+    ^(.+[-_.])??adse?rv(er?|ice)?s?[0-9]*[-.]
+    ^(.+[-_.])??m?ad[sxv]?[0-9]*[-_.]
+    ^(.+[-_.])??telemetry[-.]
+    ^(.+[-_.])??xn--
+    ^adim(age|g)s?[0-9]*[-_.]
+    ^adtrack(er|ing)?[0-9]*[-.]
+    ^advert(s|is(ing|ements?))?[0-9]*[-_.]
+    ^aff(iliat(es?|ion))?[-.]
+    ^analytics?[-.]
+    ^banners?[-.]
+    ^beacons?[0-9]*[-.]
+    ^count(ers?)?[0-9]*[-.]
+    ^pixels?[-.]
+    ^stat(s|istics)?[0-9]*[-.]
+    ^track(ers?|ing)?[0-9]*[-.]
+    ^traff(ic)?[-.]
+    ^(.*)\.g00\.(.*)
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole-deployment
+  namespace: pihole-test
+  labels:
+    app: pihole
+spec:
+  replicas: 1 # would be cool to multi replica this but i don't think pihole directly supports this?
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      hostNetwork: true
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          # upstream DNS used by pihole.
+          - 9.9.9.9
+          - 1.1.1.1 # maybe i can use cloudflare as backup? let's see what happens, can't be worse than before
+      containers:
+      - name: pihole
+        # https://hub.docker.com/r/pihole/pihole/tags
+        image: pihole/pihole:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TZ
+          value: "America/Los_Angeles"
+        - name: WEBPASSWORD
+          value: changethisdefaultpassword
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 53
+          protocol: TCP
+        - containerPort: 53
+          protocol: UDP
+        - containerPort: 67
+          protocol: UDP
+        - containerPort: 80
+          protocol: TCP
+        - containerPort: 443
+          protocol: TCP
+        volumeMounts:
+        - name: pihole-adlists
+          mountPath: /etc/pihole/adlists.list
+          subPath: adlists.list
+        - name: pihole-regex
+          mountPath: /etc/pihole/regex.list
+          subPath: regex.list
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 100m
+        limits:
+          memory: 2Gi
+          cpu: 1
+      volumes:
+        - name: pihole-adlists
+          configMap:
+            name: pihole-adlists
+        - name: pihole-regex
+          configMap: 
+            name: pihole-regex
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pihole-web-service
+  namespace : pihole-test
+spec:
+  selector:
+    app: pihole
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    name : web
+  type: LoadBalancer 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pihole-dns-service
+  namespace: pihole
+spec:
+  externalTrafficPolicy: Local
+  selector:
+    app: pihole
+  ports:
+  - protocol: UDP
+    port: 53
+    targetPort: 53
+    name : dns
+  type: LoadBalancer 
