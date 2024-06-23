@@ -29,12 +29,13 @@ for node in $node_names; do
 done
 
 # Installing helm per https://helm.sh/docs/intro/install/
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
+# I have helm installed but haven't been using it and don't understand the use case. commenting out for now, same for arkade
+# curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+# chmod 700 get_helm.sh
+# ./get_helm.sh
 
 # print version to make sure it installed ok?
-helm version
+# helm version
 
 # Arkade? - https://github.com/alexellis/arkade#getting-arkade
 # Note: you can also run without `sudo` and move the binary yourself
@@ -58,9 +59,6 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 # This IP is from defaultpool yaml for metallb - TODO parameterize!
 kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "LoadBalancer", "loadBalancerIP": "192.168.0.122" } }' 
-
-
-
 
 
 
