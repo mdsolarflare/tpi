@@ -4,7 +4,10 @@
 
 # probably missed some stuff ill run into later and add here next time
 
-# Post DietPi setup, pre-k3s
+# Post DietPi setup, pre-k3s, rpi based k3s may suffer from iptables bug here - https://docs.k3s.io/known-issues#iptables
+# Standard Raspberry Pi OS installations do not start with cgroups enabled. 
+# K3S needs cgroups to start the systemd service. cgroupscan be enabled by 
+# appending cgroup_memory=1 cgroup_enable=memory to /boot/cmdline.txt.
 sed -i '1s/$/cgroup_memory=1 cgroup_enable=memory/' /boot/cmdline.txt
 
 # Installing k3s master per https://docs.k3s.io/quick-start
@@ -35,4 +38,32 @@ helm version
 #
 #arkade --help
 #ark --help  # a handy alias
+
+# MetalLB - https://metallb.universe.tf/
+# Add MetalLB repository to Helm
+helm repo add metallb https://metallb.github.io/metallb
+
+# Check the added repository
+helm search repo metallb
+#"metallb" has been added to your repositories
+#NAME            CHART VERSION   APP VERSION     DESCRIPTION
+#metallb/metallb 0.14.5          v0.14.5         A network load-balancer implementation for Kube...
+
+# I found that helm does not know what to do if this isn't set
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+# error looks like ->
+#$ helm upgrade --install metallb metallb/metallb --create-namespace --namespace metallb-system --wait
+#  Error: Kubernetes cluster unreachable: Get "http://localhost:8080/version": dial tcp [::1]:8080: connect: connection refused
+helm upgrade --install metallb metallb/metallb --create-namespace --namespace metallb-system --wait
+# success looks like ->
+#Release "metallb" does not exist. Installing it now.
+#NAME: metallb
+#LAST DEPLOYED: Sun Jun 23 07:49:05 2024
+#NAMESPACE: metallb-system
+#STATUS: deployed
+#REVISION: 1
+#TEST SUITE: None
+#NOTES:
+#MetalLB is now running in the cluster.
+
 
