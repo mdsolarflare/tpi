@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pihole
-  namespace: pihole
+  namespace: pihole # you will have to create this namespace with 'kubectl create namespace pihole'
 spec:
   hostNetwork: true
   dnsPolicy: "None"
