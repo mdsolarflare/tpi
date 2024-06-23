@@ -56,3 +56,13 @@ kubectl apply -f ./k3s-yamls/metallb-default-pool.yaml
 # install argoCD - https://argoproj.github.io/cd/
 kubectl create namespace argocd  
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# This IP is from defaultpool yaml for metallb - TODO parameterize!
+kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "LoadBalancer", "loadBalancerIP": "192.168.0.122" } }' 
+
+
+
+
+
+
+
+# kubectl get pods,deployments,services -A
