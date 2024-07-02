@@ -1,5 +1,4 @@
-# This is specifically for manifests applied to hardware without GPUs / general compute.
-# See https://localai.io/basics/kubernetes/ for more details where this was sourced
+# This is specifically for manifests applied to hardware with Nvidia GPUs
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -15,7 +14,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 50Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,6 +34,7 @@ spec:
         app: local-ai
       name: local-ai
     spec:
+      runtimeClassName: "nvidia"
       containers:
         - args:
           - phi-2
@@ -42,8 +42,11 @@ spec:
           - name: DEBUG
             value: "true"
           name: local-ai
-          image: quay.io/go-skynet/local-ai:master-ffmpeg-core
+          image: quay.io/go-skynet/local-ai:master-cublas-cuda12
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              nvidia.com/gpu: 1
           volumeMounts:
             - name: models-volume
               mountPath: /build/models
@@ -60,8 +63,8 @@ metadata:
 spec:
   selector:
     app: local-ai
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
-      port: 8080
       targetPort: 8080
+      port: 8080
