@@ -67,4 +67,5 @@ curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 # Only allow local connections and refrain from forwarding any ports.
 # Enjoy your media!
 
-
+# Load files using scp
+scp local_file user@remote_host:remote_directory
