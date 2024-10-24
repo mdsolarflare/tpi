@@ -16,3 +16,9 @@ function GroupHashes($hashes) {
 function DeleteFirstXDupes($x, $duplicates) {
   $duplicates | ForEach-Object { $_.Group[1..$x].Path | Remove-Item }
 }
+
+# For - later -- TODO doesn't handle dupes.
+# function FlattenCurrentDirectory {
+#  mv *\* .
+#}
+
