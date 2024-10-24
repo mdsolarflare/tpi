@@ -14,5 +14,5 @@ function GroupHashes($hashes) {
 
 # Delete first 100 dupes
 function DeleteFirstXDupes($x, $duplicates) {
-  $duplicates | ForEach-Object { $_.Group[1..100].Path | Remove-Item }
+  $duplicates | ForEach-Object { $_.Group[1..$x].Path | Remove-Item }
 }
