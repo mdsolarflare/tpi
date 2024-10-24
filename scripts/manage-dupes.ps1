@@ -5,3 +5,6 @@ $hashes = Get-ChildItem -Recurse | ForEach-Object {
 
 # Group similar hashes
 $duplicates = $hashes | Group-Object -Property Hash | Where-Object { $_.Count -gt 1 }
+
+# Delete first 100 dupes
+$duplicates | ForEach-Object { $_.Group[1..10].Path | Remove-Item }
