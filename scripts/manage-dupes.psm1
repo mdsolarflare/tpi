@@ -1,6 +1,6 @@
 # Hash all files in current directory
 function FindAllDupesInCurrentDirectory {
-  $hashes = Get-ChildItem -Recurse | ForEach-Object {
+  $hashes = Get-ChildItem -Recurse | ForEach-Object -Parallel {
     Get-FileHash -Path $_.FullName -Algorithm SHA256
   }
   return $hashes
