@@ -19,6 +19,6 @@ function DeleteFirstXDupes($x, $duplicates) {
 
 # For - later -- TODO doesn't handle dupes.
 # function FlattenCurrentDirectory {
-#  mv *\* .
+#  mv *\* . <-- this is too dangerous. need to think of something that's like reversable or something
 #}
 
