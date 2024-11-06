@@ -54,6 +54,15 @@ pyenv versions
 pyenv global 3.9.20
 # you can confirm the submission with pyenv versions
 
+# create a virtual environment
+mkdir coral && cd coral
+pyenv virtualenv 3.9.20 pycoral-tpu-project
+pyenv local pycoral-tpu-project
+
+
+
+
+
 # Still broken!
 sudo apt-get install python3-pycoral
 
