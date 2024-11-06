@@ -26,6 +26,41 @@ libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python3-openssl # had py
 # install pyenv via pyenv-installer project (https://github.com/pyenv/pyenv-installer)
 curl https://pyenv.run | bash
 
+# At the end of the run you will see this
+#WARNING: seems you still have not added 'pyenv' to the load path.
+#
+#Load pyenv automatically by adding
+#the following to ~/.bashrc:
+#
+#export PATH="$HOME/.pyenv/bin:$PATH"
+#eval "$(pyenv init -)"
+#eval "$(pyenv virtualenv-init -)"
+#
+#The output will be based on your shell. But you should follow the instructions 
+#to add pyenv to your path and to initialize pyenv/pyenv-virtualenv auto completion. 
+#Once you’ve done this, you need to reload your shell:
+
+# I added the previous export to .profile and .bashrc
+
+# install python 3.9
+pyenv install -v 3.9.20
+
+# ls ~/.pyenv/versions/ shows the installation location
+# use this command to see which version of python that pyenv is using
+# you should see 3.9.20
+pyenv versions
+
+# set to use 3.9.20
+pyenv global 3.9.20
+# you can confirm the submission with pyenv versions
+
+# Still broken!
+sudo apt-get install python3-pycoral
+
+
+
+
+
 
 
 
