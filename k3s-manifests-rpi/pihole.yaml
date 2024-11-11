@@ -12,14 +12,14 @@ kind: Namespace
 metadata:
   name: pihole
 ---
-#apiVersion: v1
-#kind: ConfigMap
-#metadata:
-#  name: pihole-adlists
-#  namespace: pihole
-#data: # moved to this list after pluto tv was exploding
-#  adlists.list: https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt
-#---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-adlists
+  namespace: pihole
+data: # moved to this list after pluto tv was exploding
+  adlists.list: https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
