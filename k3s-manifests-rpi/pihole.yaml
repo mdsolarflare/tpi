@@ -2,6 +2,11 @@
 # my original reference - https://uthark.github.io/post/2021-10-06-running-pihole-kubernetes/
 # this didn't really work for me because it needs persistent volume storage.. and tbh i don't need that. lol. it's two files.
 # modified this to make the below - https://www.virtualthoughts.co.uk/2019/10/23/k8s-metallb-and-pihole/
+#
+# To trigger and update directly on k3s to pull a fresh image: 'kubectl rollout restart deployment -n pihole'
+# it might take a minute, be patient
+# 
+#
 apiVersion: v1
 kind: Namespace
 metadata:
