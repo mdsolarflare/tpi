@@ -51,13 +51,6 @@ spec:
       labels:
         app: pihole
     spec:
-      hostNetwork: true
-      dnsPolicy: "None"
-      dnsConfig:
-        nameservers:
-          # upstream DNS used by pihole.
-          - 9.9.9.9
-          - 1.1.1.1 # maybe i can use cloudflare as backup? let's see what happens, can't be worse than before
       containers:
       - name: pihole
         # https://hub.docker.com/r/pihole/pihole/tags
