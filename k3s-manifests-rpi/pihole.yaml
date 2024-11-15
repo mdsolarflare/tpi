@@ -5,45 +5,34 @@
 #
 # To trigger and update directly on k3s to pull a fresh image: 'kubectl rollout restart deployment -n pihole'
 # it might take a minute, be patient
+#
+# moved to this list after pluto tv was exploding - which is in github stars
+# https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt
+# 
+# Regex List?
+# ^(.+[-_.])??adse?rv(er?|ice)?s?[0-9]*[-.]
+#    ^(.+[-_.])??m?ad[sxv]?[0-9]*[-_.]
+#    ^(.+[-_.])??telemetry[-.]
+#    ^(.+[-_.])??xn--
+#    ^adim(age|g)s?[0-9]*[-_.]
+#    ^adtrack(er|ing)?[0-9]*[-.]
+#    ^advert(s|is(ing|ements?))?[0-9]*[-_.]
+#    ^aff(iliat(es?|ion))?[-.]
+#    ^analytics?[-.]
+#    ^banners?[-.]
+#    ^beacons?[0-9]*[-.]
+#    ^count(ers?)?[0-9]*[-.]
+#    ^pixels?[-.]
+#    ^stat(s|istics)?[0-9]*[-.]
+#    ^track(ers?|ing)?[0-9]*[-.]
+#    ^traff(ic)?[-.]
+#    ^(.*)\.g00\.(.*)
 # 
 #
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: pihole
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: pihole-adlists
-  namespace: pihole
-data: # moved to this list after pluto tv was exploding
-  adlists.list: https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: pihole-regex
-  namespace: pihole
-data:
-  regex.list: |
-    ^(.+[-_.])??adse?rv(er?|ice)?s?[0-9]*[-.]
-    ^(.+[-_.])??m?ad[sxv]?[0-9]*[-_.]
-    ^(.+[-_.])??telemetry[-.]
-    ^(.+[-_.])??xn--
-    ^adim(age|g)s?[0-9]*[-_.]
-    ^adtrack(er|ing)?[0-9]*[-.]
-    ^advert(s|is(ing|ements?))?[0-9]*[-_.]
-    ^aff(iliat(es?|ion))?[-.]
-    ^analytics?[-.]
-    ^banners?[-.]
-    ^beacons?[0-9]*[-.]
-    ^count(ers?)?[0-9]*[-.]
-    ^pixels?[-.]
-    ^stat(s|istics)?[0-9]*[-.]
-    ^track(ers?|ing)?[0-9]*[-.]
-    ^traff(ic)?[-.]
-    ^(.*)\.g00\.(.*)
+  name: pihole  
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -92,13 +81,9 @@ spec:
           protocol: TCP
         - containerPort: 443
           protocol: TCP
-        volumeMounts:
-        - name: pihole-adlists
-          mountPath: /etc/pihole/adlists.list
-          subPath: adlists.list
-        - name: pihole-regex
-          mountPath: /etc/pihole/regex.list
-          subPath: regex.list
+        volumeMounts: # copy pasta same as below
+        - mountPath: /etc/pihole
+          name: config # end of copy pasta
         resources:
           requests:
             memory: 128Mi
@@ -106,13 +91,10 @@ spec:
           limits:
             memory: 2Gi
             cpu: 1000m
-      volumes:
-        - name: pihole-adlists
-          configMap:
-            name: pihole-adlists
-        - name: pihole-regex
-          configMap: 
-            name: pihole-regex
+      volumes: # copy pasted, need to verify before apply
+      - name: config
+        persistentVolumeClaim:
+          claimName: pihole-config # end of copy pasta
 ---
 kind: Service
 apiVersion: v1
@@ -144,3 +126,21 @@ spec:
     targetPort: 53
     name : dns
   type: LoadBalancer 
+---
+# Storage for the config?
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pihole
+  name: pihole-config
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 500Mi
+status: {}
+
