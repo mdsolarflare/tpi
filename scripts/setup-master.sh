@@ -62,6 +62,14 @@ kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "Load
 
 #Install longhorn - https://docs.k3s.io/storage
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+# Required packages that i believe to be missing for longhorn/k3s on dietpi
+sudo apt update
+sudo apt install -y open-iscsi
+sudo systemctl enable --now iscsid
 
 
+
+
+
+# my cool kid debugging area.
 # kubectl get pods,deployments,services -A
