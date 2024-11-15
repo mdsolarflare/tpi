@@ -74,4 +74,3 @@ sudo systemctl enable --now iscsid
 # my cool kid debugging area - TODO
 # kubectl get pods,deployments,services -A
 #
-# 1. I think need to clean up the clusters as there is stuff like traefik that's unused. or i should figure out how to use it correctly. lol.
