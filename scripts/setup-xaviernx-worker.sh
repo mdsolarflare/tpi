@@ -24,3 +24,12 @@
 
 sudo apt update
 sudo apt upgrade -y
+
+# sad -> NBNA (Never Buy Nvidia Again)
+# lsb_release -a
+# No LSB modules are available.
+# Distributor ID:	Ubuntu
+# Description:	Ubuntu 20.04.6 LTS
+# Release:	20.04
+# Codename:	focal
+
