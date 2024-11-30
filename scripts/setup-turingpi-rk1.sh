@@ -1,3 +1,5 @@
+# you probably need to redo this
+
 # flash it via web ui
 # First, identify your network interface:
 
