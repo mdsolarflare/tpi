@@ -77,8 +77,8 @@ spec:
         - containerPort: 443
           protocol: TCP
         volumeMounts: # copy pasta same as below
-        - mountPath: /etc/pihole
-          name: config # end of copy pasta
+        - name: pihole-config
+          mountPath: /etc/pihole
         resources:
           requests:
             memory: 128Mi
@@ -87,7 +87,7 @@ spec:
             memory: 2Gi
             cpu: 1000m
       volumes: # copy pasted, need to verify before apply
-      - name: config
+      - name: pihole-config
         persistentVolumeClaim:
           claimName: longhorn-pihole-data
 ---
