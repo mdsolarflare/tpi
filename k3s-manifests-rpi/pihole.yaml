@@ -64,7 +64,9 @@ spec:
         - name: WEBPASSWORD
           value: changethisdefaultpassword
         securityContext:
-          privileged: true
+          capabilities:
+            add: ["NET_ADMIN", "NET_BIND_SERVICE"]
+          privileged: false
         ports:
         - containerPort: 53
           protocol: TCP
@@ -79,6 +81,8 @@ spec:
         volumeMounts: # copy pasta same as below
         - name: pihole-config
           mountPath: /etc/pihole
+        - name: dnsmasq-config  # Add this mount
+          mountPath: /etc/dnsmasq.d
         resources:
           requests:
             memory: 128Mi
@@ -90,6 +94,9 @@ spec:
       - name: pihole-config
         persistentVolumeClaim:
           claimName: longhorn-pihole-data
+      - name: dnsmasq-config
+        persistentVolumeClaim:
+          claimName: longhorn-pihole-dnsmasq
 ---
 kind: Service
 apiVersion: v1
@@ -121,12 +128,12 @@ spec:
     targetPort: 53
     name : dns
   type: LoadBalancer 
----
-# Storage for the config?
+--- # https://docs.k3s.io/storage
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: longhorn-pihole-data
+  namespace: pihole
 spec:
   accessModes:
     - ReadWriteOnce
@@ -134,4 +141,16 @@ spec:
   resources:
     requests:
       storage: 500Mi
-
+--- # https://docs.k3s.io/storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-pihole-dnsmasq
+  namespace: pihole
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 500Mi
