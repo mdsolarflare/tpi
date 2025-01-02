@@ -36,7 +36,7 @@ spec:
       - name: pihole
         image: pihole/pihole:latest # https://hub.docker.com/r/pihole/pihole/tags
         imagePullPolicy: IfNotPresent
-        env:
+        env: # https://github.com/pi-hole/docker-pi-hole#upgrading-persistence-and-customizations
         - name: TZ
           value: "America/Los_Angeles"
         - name: WEBPASSWORD
