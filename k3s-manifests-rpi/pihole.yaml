@@ -46,6 +46,8 @@ spec:
   selector:
     matchLabels:
       app: pihole
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -87,7 +89,7 @@ spec:
       volumes: # copy pasted, need to verify before apply
       - name: config
         persistentVolumeClaim:
-          claimName: pihole-config # end of copy pasta
+          claimName: longhorn-pihole-data
 ---
 kind: Service
 apiVersion: v1
@@ -124,16 +126,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
-  labels:
-    app: pihole
-  name: pihole-config
+  name: longhorn-pihole-data
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   storageClassName: longhorn
   resources:
     requests:
       storage: 500Mi
-status: {}
 
