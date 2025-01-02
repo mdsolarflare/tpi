@@ -33,6 +33,8 @@ On each worker node Raspberry Pi, run ```./scripts/setup-worker.sh``` script. Th
 
 **Important Note:** Running these scripts will modify your Raspberry Pi system configurations. Ensure you understand the contents of the scripts before running them.
 
+# TODO - rewrite this, you just install argocd and do all the manifest syncing from there now
+
 ### Load Balancing (required for the following PiHole Manifest)
 This repository includes a k3s manifest file (located in the k3s-manifest directory) for setting up Metallb as a load balancer for your cluster.
 
