@@ -13,11 +13,13 @@ sed -i '1s/$/cgroup_memory=1 cgroup_enable=memory/' /boot/cmdline.txt
 # Installing k3s master per https://docs.k3s.io/quick-start
 curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token $1 --node-ip $2 --disable servicelb
 
-#NAME           STATUS   ROLES                  AGE    VERSION
-#dietpi.node1   Ready    control-plane,master   24m    v1.29.5+k3s1
-#dietpi.node3   Ready    <none>                 110s   v1.29.5+k3s1
-#dietpi.node2   Ready    <none>                 14m    v1.29.5+k3s1
-#dietpi.node4   Ready    <none>                 93s    v1.29.5+k3s1
+#NAME           STATUS   ROLES                         AGE     VERSION
+#dietpi.node4   Ready    worker                        205d    v1.29.5+k3s1
+#dietpi.node1   Ready    control-plane,master,worker   205d    v1.29.5+k3s1
+#dietpi.node2   Ready    worker                        205d    v1.29.5+k3s1
+#dietpi.node3   Ready    worker                        205d    v1.29.5+k3s1
+#xaviernx       Ready    worker                        9m52s   v1.31.4+k3s1
+
 
 # BASH SCRIPTS FTW :^)
 node_names=$(kubectl get nodes -o custom-columns=NAME:.metadata.name | awk '{print $1}' | tail -n +2)
@@ -27,6 +29,10 @@ for node in $node_names; do
   kubectl label nodes $node kubernetes.io/role=worker
   # Add additional commands to operate on each node here (optional)
 done
+
+kubectl label nodes xaviernx kubernetes.io/role=worker
+kubectl label node xaviernx machine-learning=yes
+kubectl label node xaviernx ml-stack=nvidia
 
 # Installing helm per https://helm.sh/docs/intro/install/
 # I have helm installed but haven't been using it and don't understand the use case. commenting out for now, same for arkade
