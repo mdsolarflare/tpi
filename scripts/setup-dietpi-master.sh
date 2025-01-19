@@ -32,6 +32,8 @@ done
 
 kubectl label nodes xaviernx kubernetes.io/role=worker
 kubectl label node xaviernx ml-stack=nvidia
+kubectl label nodes ubuntu kubernetes.io/role=worker
+kubectl label node ubuntu ml-stack=rockchip
 
 # Installing helm per https://helm.sh/docs/intro/install/
 # I have helm installed but haven't been using it and don't understand the use case. commenting out for now, same for arkade
