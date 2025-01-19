@@ -31,7 +31,6 @@ for node in $node_names; do
 done
 
 kubectl label nodes xaviernx kubernetes.io/role=worker
-kubectl label node xaviernx machine-learning=yes
 kubectl label node xaviernx ml-stack=nvidia
 
 # Installing helm per https://helm.sh/docs/intro/install/
