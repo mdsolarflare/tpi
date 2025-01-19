@@ -1,4 +1,4 @@
-# TODO
+# Assign the mac to a IP on the dhcp server
 
 # Required:
 # SDK Manager 2.1.0.11669 x86_64
