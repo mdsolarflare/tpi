@@ -54,11 +54,11 @@ metadata:
   name: ollama
   namespace: ollama
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     name: ollama
   ports:
   - port: 80
-    name: http
+    name: web
     targetPort: http
     protocol: TCP
