@@ -30,7 +30,7 @@ spec:
             name: ollama-storage
         ports:
         - name: http
-          containerPort: 11434 #?
+          containerPort: 11434 # Ollama specifies this on their container page https://hub.docker.com/r/ollama/ollama
           protocol: TCP
         env:
         - name: PRELOAD_MODELS
