@@ -1,14 +1,19 @@
 # based on https://medium.com/@yuxiaojian/host-your-own-ollama-service-in-a-cloud-kubernetes-k8s-cluster-c818ca84a055
 
-# add namespace
-
+# Define the ollama namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ollama
+---
+# Define the ollama deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ollama
   namespace: ollama
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       name: ollama
@@ -19,19 +24,19 @@ spec:
     spec:
       containers:
       - name: ollama
-        image: ollama/ollama:0.3.5
+        image: ollama/ollama:latest
         volumeMounts:
           - mountPath: /root/.ollama
             name: ollama-storage
         ports:
         - name: http
-          containerPort: 11434
+          containerPort: 11434 #?
           protocol: TCP
         env:
         - name: PRELOAD_MODELS
-          value: "llama3.1"
+          value: "llama3.3 phi4 starcoder2"
         - name: OLLAMA_KEEP_ALIVE
-          value: "12h"
+          value: "8h"
         lifecycle:
           postStart:
             exec:
@@ -41,7 +46,22 @@ spec:
           path: /opt/ollama
           type: DirectoryOrCreate
         name: ollama-storage
+--- 
+# Define the longhorn model storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-storage-longhorn
+  namespace: ollama
+spec:
+  accessModes:
+    - ReadWriteOnce    # Can also be ReadWriteMany if needed
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 128Gi    # Specify your desired size
 ---
+# Define the ollama service
 apiVersion: v1
 kind: Service
 metadata:
@@ -51,58 +71,6 @@ spec:
   type: ClusterIP
   selector:
     name: ollama
-  ports:
-  - port: 80
-    name: http
-    targetPort: http
-    protocol: TCP
-Set Up WebUI
-Next, create the deployment and service endpoint for WebUI using the YAML file below. The data storage /app/backend/data is mounted to a host folder. The WebUI pod is fixed to a node by nodeName: ollama-worker-1 to keep the data stored, as it contains the login data. It connects to Ollama through the service endpoint http://ollamawithin the cluster.
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: webui
-  namespace: ollama
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: webui
-  template:
-    metadata:
-      labels:
-        name: webui
-    spec:
-      volumes:
-      - hostPath:
-          path: /opt/webui
-          type: DirectoryOrCreate
-        name: webui-storage
-      nodeName: ollama-worker-1
-      containers:
-        - name: webui
-          image: ghcr.io/open-webui/open-webui:main
-          volumeMounts:
-          - mountPath: /app/backend/data
-            name: webui-storage
-          env:
-            - name: OLLAMA_BASE_URLS
-              value: "http://ollama"
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webui
-  namespace: ollama
-spec:
-  type: ClusterIP
-  selector:
-    name: webui
   ports:
   - port: 80
     name: http
