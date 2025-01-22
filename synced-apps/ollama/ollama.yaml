@@ -7,8 +7,8 @@ metadata:
   name: ollama
 ---
 # Define the ollama deployment
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: ollama
   namespace: ollama
@@ -48,17 +48,17 @@ spec:
         name: ollama-storage
 ---
 # Define the ollama service
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: ollama
+  name: ollama-web-service
   namespace: ollama
 spec:
-  type: LoadBalancer
   selector:
     name: ollama
   ports:
-  - port: 80
+  - protocol: TCP
+    port: 80
+    targetPort: 80
     name: web
-    targetPort: http
-    protocol: TCP
+  type: LoadBalancer
