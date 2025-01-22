@@ -1,0 +1,64 @@
+# based on https://medium.com/@yuxiaojian/host-your-own-ollama-service-in-a-cloud-kubernetes-k8s-cluster-c818ca84a055
+
+# Define the ollama namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ollama
+---
+# Define the ollama deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+  namespace: ollama
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: ollama
+  template:
+    metadata:
+      labels:
+        name: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama:latest
+        volumeMounts:
+          - mountPath: /root/.ollama
+            name: ollama-storage
+        ports:
+        - name: http
+          containerPort: 11434 #?
+          protocol: TCP
+        env:
+        - name: PRELOAD_MODELS
+          value: "llama3.3 phi4 starcoder2"
+        - name: OLLAMA_KEEP_ALIVE
+          value: "8h"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "for model in $PRELOAD_MODELS; do ollama run $model \"\"; done"]
+      volumes:
+      - hostPath:
+          path: /opt/ollama
+          type: DirectoryOrCreate
+        name: ollama-storage
+---
+# Define the ollama service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+  namespace: ollama
+spec:
+  type: ClusterIP
+  selector:
+    name: ollama
+  ports:
+  - port: 80
+    name: http
+    targetPort: http
+    protocol: TCP
