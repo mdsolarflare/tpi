@@ -46,20 +46,6 @@ spec:
           path: /opt/ollama
           type: DirectoryOrCreate
         name: ollama-storage
---- 
-# Define the longhorn model storage
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ollama-storage-longhorn
-  namespace: ollama
-spec:
-  accessModes:
-    - ReadWriteOnce    # Can also be ReadWriteMany if needed
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 128Gi    # Specify your desired size
 ---
 # Define the ollama service
 apiVersion: v1
