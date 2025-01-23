@@ -70,11 +70,15 @@ spec:
             cpu: 1000m
       volumes:
       - name: pihole-config
-        persistentVolumeClaim:
-          claimName: longhorn-pihole-data
+        hostPath:
+          path: /opt/pihole/config
+        #persistentVolumeClaim:
+        #  claimName: longhorn-pihole-data
       - name: dnsmasq-config
-        persistentVolumeClaim:
-          claimName: longhorn-pihole-dnsmasq
+        hostPath:
+          path: /opt/pihole/dnsmasq
+        #persistentVolumeClaim:
+        #  claimName: longhorn-pihole-dnsmasq
 ---
 kind: Service
 apiVersion: v1
@@ -106,29 +110,29 @@ spec:
     targetPort: 53
     name : dns
   type: LoadBalancer 
---- # https://docs.k3s.io/storage
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: longhorn-pihole-data
-  namespace: pihole
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 500Mi
---- # https://docs.k3s.io/storage
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: longhorn-pihole-dnsmasq
-  namespace: pihole
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 500Mi
+#--- # https://docs.k3s.io/storage
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: longhorn-pihole-data
+#  namespace: pihole
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: longhorn
+#  resources:
+#    requests:
+#      storage: 500Mi
+#--- # https://docs.k3s.io/storage
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: longhorn-pihole-dnsmasq
+#  namespace: pihole
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: longhorn
+#  resources:
+#    requests:
+#      storage: 500Mi
