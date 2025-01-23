@@ -80,4 +80,4 @@ sudo systemctl enable --now iscsid
 
 # my cool kid debugging area - TODO
 # kubectl get pods,deployments,services -A
-#
+# kubectl exec -it <pod-name> -n <namespace> -- /bin/bash
