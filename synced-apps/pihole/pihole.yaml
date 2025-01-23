@@ -115,7 +115,7 @@ spec:
     - ReadWriteOnce # Or ReadWriteMany if needed by multiple pods
   resources:
     requests:
-      storage: 500M # Adjust as needed
+      storage: 500Mi # Adjust as needed
 --- # https://docs.k3s.io/storage
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -126,4 +126,4 @@ spec:
     - ReadWriteOnce # Or ReadWriteMany if needed by multiple pods
   resources:
     requests:
-      storage: 500M # Adjust as needed
+      storage: 500Mi # Adjust as needed
