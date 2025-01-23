@@ -73,7 +73,7 @@ spec:
           claimName: pihole-pvc # This must match the PVC name
       - name: dnsmasq-config
         persistentVolumeClaim:
-          claimName: pihole-pvc # This must match the PVC name
+          claimName: dnsmasq-pvc # This must match the PVC name
 ---
 kind: Service
 apiVersion: v1
@@ -115,4 +115,15 @@ spec:
     - ReadWriteOnce # Or ReadWriteMany if needed by multiple pods
   resources:
     requests:
-      storage: 1Gi # Adjust as needed
+      storage: 500M # Adjust as needed
+--- # https://docs.k3s.io/storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dnsmasq-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce # Or ReadWriteMany if needed by multiple pods
+  resources:
+    requests:
+      storage: 500M # Adjust as needed
