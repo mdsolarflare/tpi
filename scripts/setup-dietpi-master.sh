@@ -52,14 +52,14 @@ kubectl label node ubuntu ml-stack=rockchip
 #ark --help  # a handy alias
 
 # MetalLB - https://metallb.universe.tf/
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 # to delete 
 # kubectl get clusterroles,clusterrolebindings -n metallb-system
 # then delete the specific ones keeping the pods up
 # kubectl delete deployments,services,pods -n metallb-system --all
 
 # apply the configuration manifest, you need to change the IPs
-kubectl apply -f ./k3s-yamls/metallb-default-pool.yaml
+kubectl apply -f ./k3s-yamls/metallb-default-pool.yaml # DO THIS VIA ARGO
 
 # install argoCD - https://argoproj.github.io/cd/
 kubectl create namespace argocd  
