@@ -71,12 +71,14 @@ spec:
       volumes:
       - name: pihole-config
         hostPath:
-          path: /opt/pihole/config
+          path: /data/pihole/etc/pihole
+          type: Directory
         #persistentVolumeClaim:
         #  claimName: longhorn-pihole-data
       - name: dnsmasq-config
         hostPath:
-          path: /opt/pihole/dnsmasq
+          path: /data/pihole/dnsmasq.d
+          type: Directory
         #persistentVolumeClaim:
         #  claimName: longhorn-pihole-dnsmasq
 ---
