@@ -20,8 +20,7 @@ curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token $1 --
 #dietpi.node3   Ready    worker                        205d    v1.29.5+k3s1
 #xaviernx       Ready    worker                        9m52s   v1.31.4+k3s1
 
-
-# BASH SCRIPTS FTW :^)
+# BASH SCRIPTS FTW :^) jk rethink labeling
 node_names=$(kubectl get nodes -o custom-columns=NAME:.metadata.name | awk '{print $1}' | tail -n +2)
 for node in $node_names; do
   # Replace 'my-command' with your actual command
@@ -53,13 +52,7 @@ kubectl label node ubuntu ml-stack=rockchip
 
 # MetalLB - https://metallb.universe.tf/
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
-# to delete 
-# kubectl get clusterroles,clusterrolebindings -n metallb-system
-# then delete the specific ones keeping the pods up
-# kubectl delete deployments,services,pods -n metallb-system --all
-
-# apply the configuration manifest, you need to change the IPs
-kubectl apply -f ./k3s-yamls/metallb-default-pool.yaml # DO THIS VIA ARGO
+kubectl apply -f https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/synced-apps/metallb-system/metallb-default-pool.yaml
 
 # install argoCD - https://argoproj.github.io/cd/
 kubectl create namespace argocd  
@@ -68,7 +61,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "LoadBalancer", "loadBalancerIP": "192.168.0.122" } }' 
 
 #Install longhorn - https://docs.k3s.io/storage
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+# kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
 # Required packages that i believe to be missing for longhorn/k3s on dietpi
 sudo apt update
 sudo apt install -y open-iscsi
