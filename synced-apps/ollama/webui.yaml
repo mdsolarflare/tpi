@@ -1,8 +1,6 @@
 # from https://medium.com/@yuxiaojian/host-your-own-ollama-service-in-a-cloud-kubernetes-k8s-cluster-c818ca84a055
 
-# add namespace?
-
-
+# namepsace is defined in ollama.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,11 +42,11 @@ metadata:
   name: webui
   namespace: ollama
 spec:
-  type: ClusterIP
   selector:
     name: webui
   ports:
-  - port: 80
+  - protocol: TCP
+    port: 80
+    targetPort: 80
     name: http
-    targetPort: http
-    protocol: TCP
+  type: LoadBalancer
