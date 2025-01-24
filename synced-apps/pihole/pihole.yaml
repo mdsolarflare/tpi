@@ -30,7 +30,7 @@ spec:
       nodeSelector:
         kubernetes.io/arch: arm64
         kubernetes.io/os: linux
-        hardware: rpi4
+        hardware: rpicm4
       containers:
       - name: pihole
         image: pihole/pihole:latest # https://hub.docker.com/r/pihole/pihole/tags
