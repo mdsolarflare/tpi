@@ -30,8 +30,9 @@ kubectl label node ubuntu ml-stack=rockchip
 
 
 
-#Install longhorn - https://docs.k3s.io/storage
-# kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
+# Install longhorn - https://docs.k3s.io/storage
+# https://longhorn.io/docs/1.8.0/deploy/install/install-with-kubectl/
+# https://github.com/longhorn/longhorn/releases/tag/v1.8.0
 # Required packages that i believe to be missing for longhorn/k3s on dietpi
 sudo apt update
 sudo apt install -y open-iscsi
