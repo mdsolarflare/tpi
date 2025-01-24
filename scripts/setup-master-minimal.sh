@@ -16,3 +16,9 @@ curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token $1 --
 # MetalLB - https://metallb.universe.tf/
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 kubectl apply -f https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/synced-apps/metallb-system/metallb-default-pool.yaml
+
+# install argoCD - https://argoproj.github.io/cd/
+kubectl create namespace argocd  
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# This IP is from defaultpool yaml for metallb - TODO parameterize!
+kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "LoadBalancer", "loadBalancerIP": "192.168.0.xxx" } }' 
