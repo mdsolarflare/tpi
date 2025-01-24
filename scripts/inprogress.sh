@@ -36,7 +36,7 @@ kubectl label node ubuntu ml-stack=rockchip
 sudo apt update
 sudo apt install -y open-iscsi
 sudo systemctl enable --now iscsid
-
+# READ THE DOCS
 
 
 
