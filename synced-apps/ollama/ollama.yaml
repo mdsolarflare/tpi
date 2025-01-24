@@ -13,7 +13,7 @@ metadata:
   name: ollama
   namespace: ollama
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       name: ollama
@@ -34,7 +34,7 @@ spec:
           protocol: TCP
         env:
         - name: PRELOAD_MODELS
-          value: "llama3.3 phi4 starcoder2"
+          value: "phi4" #starcoder2 llama3.3 
         - name: OLLAMA_KEEP_ALIVE
           value: "8h"
         lifecycle:
