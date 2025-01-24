@@ -30,13 +30,6 @@ kubectl label node ubuntu ml-stack=rockchip
 
 
 
-
-# install argoCD - https://argoproj.github.io/cd/
-kubectl create namespace argocd  
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-# This IP is from defaultpool yaml for metallb - TODO parameterize!
-kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "LoadBalancer", "loadBalancerIP": "192.168.0.122" } }' 
-
 #Install longhorn - https://docs.k3s.io/storage
 # kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml
 # Required packages that i believe to be missing for longhorn/k3s on dietpi
