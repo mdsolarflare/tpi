@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage
-# ./setup-worker.sh $token $masterIp $thisNodeName
+# ./setup-worker.sh $token $masterIp
 
 # Post DietPi setup, pre-k3s
 sed -i '1s/$/cgroup_memory=1 cgroup_enable=memory/' /boot/cmdline.txt
