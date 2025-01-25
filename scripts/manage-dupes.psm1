@@ -1,4 +1,6 @@
-# Hash all files in current directory
+#Requires -Version 6.0
+
+# Hash all files in current directory. -Parallel requires version 7 of powershell.
 function FindAllDupesInCurrentDirectory {
   $hashes = Get-ChildItem -Recurse | ForEach-Object -Parallel {
     Get-FileHash -Path $_.FullName -Algorithm SHA256
