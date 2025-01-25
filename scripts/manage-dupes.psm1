@@ -1,4 +1,4 @@
-#Requires -Version 6.0
+#Requires -Version 7.0
 
 # Hash all files in current directory. -Parallel requires version 7 of powershell.
 function FindAllDupesInCurrentDirectory {
