@@ -19,4 +19,26 @@ spec:
           - turingrk1  # Replace with your actual hostname
   storageClassName: local-storage
   persistentVolumeReclaimPolicy: Retain
+---  
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: xaviernx-nvme1-volume
+spec:
+  capacity:
+    storage: 220Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: /mnt/nvme1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - xaviernx  # Replace with your actual hostname
+  storageClassName: local-storage
+  persistentVolumeReclaimPolicy: Retain
   
