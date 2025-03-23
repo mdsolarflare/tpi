@@ -16,6 +16,8 @@ done
 
 kubectl label nodes xaviernx kubernetes.io/role=worker
 kubectl label node xaviernx ml-stack=nvidia
+kubectl label nodes lianli kubernetes.io/role=worker
+kubectl label node lianli ml-stack=nvidia
 kubectl label nodes ubuntu kubernetes.io/role=worker
 kubectl label node ubuntu ml-stack=rockchip
 
