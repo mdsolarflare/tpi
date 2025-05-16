@@ -22,8 +22,9 @@
 # 
 # sudo ./tools/l4t_create_default_user.sh -u daniel -p topsecretpasswd -a -n orinnx
 
-sudo apt update
-sudo apt upgrade -y
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt autoremove -y
 
 # sad -> NBNA (Never Buy Nvidia Again)
 # lsb_release -a
@@ -33,6 +34,11 @@ sudo apt upgrade -y
 # Codename:	focal
 
 # btw lol updated to jammy and not sure anything works anymore but we will get there ^_^
+# sudo do-release-upgrade
+# sudo apt update
+# sudo apt upgrade -y
+# sudo apt autoremove
+# sudo apt --fix-broken install
 
 # Distributor ID:	Ubuntu
 # Description:	Ubuntu 22.04.5 LTS
