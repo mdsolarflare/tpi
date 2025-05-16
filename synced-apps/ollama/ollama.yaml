@@ -22,6 +22,8 @@ spec:
       labels:
         name: ollama
     spec:
+      nodeSelector:
+        ml-stack: nvidia  # node selector label
       containers:
       - name: ollama
         image: ollama/ollama:latest
