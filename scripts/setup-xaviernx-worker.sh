@@ -27,11 +27,19 @@ sudo apt upgrade -y
 
 # sad -> NBNA (Never Buy Nvidia Again)
 # lsb_release -a
-# No LSB modules are available.
 # Distributor ID:	Ubuntu
 # Description:	Ubuntu 20.04.6 LTS
 # Release:	20.04
 # Codename:	focal
+
+# btw lol updated to jammy and not sure anything works anymore but we will get there ^_^
+
+# Distributor ID:	Ubuntu
+# Description:	Ubuntu 22.04.5 LTS
+# Release:	22.04
+# Codename:	jammy
+
+# ref: https://viking-drone.com/wiki/upgrading-nvidia-jetson-xavier-nx-to-ubuntu-20-04/
 
 # Installing k3s worker per https://docs.k3s.io/quick-start
 curl -sfL https://get.k3s.io | K3S_URL="https://$2:6443" K3S_TOKEN=$1 sh -
