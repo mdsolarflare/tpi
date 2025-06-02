@@ -35,5 +35,5 @@ kubectl patch service argocd-server -n argocd --patch '{ "spec": { "type": "Load
 Add the Kubernetes Nvidia Device Plugin
 
 ```sh
-kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/main/deployments/static/nvidia-device-plugin.yml
+kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.16.2/deployments/static/nfd.yaml
 ```
