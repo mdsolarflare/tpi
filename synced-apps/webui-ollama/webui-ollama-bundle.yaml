@@ -4,72 +4,101 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ollama
+  name: webui-ollama-bundle
 ---
-# Define the ollama deployment
-kind: Deployment
-apiVersion: apps/v1
+apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: ollama
-  namespace: ollama
+  name: ollama-data-pvc
+  labels:
+    app: open-webui
 spec:
-  replicas: 1
+  accessModes:
+    - ReadWriteOnce # This means the volume can be mounted as read-write by a single node.
+  resources:
+    requests:
+      storage: 500Gi # Adjust this size based on your expected Ollama model storage needs.
+  storageClassName: local-path # k3s typically uses 'local-path' as its default StorageClass.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: open-webui-data-pvc
+  labels:
+    app: open-webui
+spec:
+  accessModes:
+    - ReadWriteOnce # This means the volume can be mounted as read-write by a single node.
+  resources:
+    requests:
+      storage: 5Gi # Adjust this size based on your expected Open WebUI data storage needs.
+  storageClassName: local-path # k3s typically uses 'local-path' as its default StorageClass.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-webui-deployment
+  labels:
+    app: open-webui
+spec:
+  replicas: 1 # We want one instance of the Open WebUI container running.
   selector:
     matchLabels:
-      name: ollama
+      app: open-webui
   template:
     metadata:
       labels:
-        name: ollama
+        app: open-webui
     spec:
-      nodeSelector:
-        ml-stack: nvidia  # node selector label
+      # This is crucial for GPU access on your Jetson Orin Nano.
+      # It assumes that the 'nvidia-container-runtime' is configured
+      # as a runtime in your k3s environment and named 'nvidia'.
+      # You might need to install the NVIDIA device plugin or configure k3s
+      # to use this runtime if you haven't already.
+      runtimeClassName: nvidia
       containers:
-      - name: ollama
-        image: ollama/ollama:latest
-        resources:
-          requests:
-            memory: 4Gi
-            cpu: 4000m
-            ephemeral-storage: 500Gi
-          limits: # It hasn't been an issue so far, but from practice at work, limits seem more trouble than they are worth.
-            memory: 8Gi
-            cpu: 6000m
-            ephemeral-storage: 1500Gi
-        volumeMounts:
-          - mountPath: /root/.ollama
-            name: ollama-storage
-        ports:
-        - name: http
-          containerPort: 11434 # Ollama specifies this on their container page https://hub.docker.com/r/ollama/ollama
-          protocol: TCP
-        env:
-        - name: PRELOAD_MODELS
-          value: "phi4-mini" #starcoder2 llama3.3 
-        - name: OLLAMA_KEEP_ALIVE
-          value: "8h"
-        lifecycle:
-          postStart:
-            exec:
-              command: ["/bin/sh", "-c", "for model in $PRELOAD_MODELS; do ollama run $model \"\"; done"]
+        - name: open-webui
+          image: ghcr.io/open-webui/open-webui:ollama # The Docker image you specified.
+          ports:
+            - containerPort: 8080 # The port the application listens on inside the container.
+          volumeMounts:
+            - name: ollama-data-storage
+              mountPath: /root/.ollama # Mounts the Ollama data PVC to this path.
+            - name: open-webui-data-storage
+              mountPath: /app/backend/data # Mounts the Open WebUI data PVC to this path.
+          resources:
+            limits:
+              # Requesting 1 NVIDIA GPU. This tells Kubernetes to schedule this pod
+              # on a node that has an available NVIDIA GPU.
+              nvidia.com/gpu: 1
+            requests:
+              # It's good practice to also request resources, even if small,
+              # to help with scheduling.
+              cpu: "1000m" # 1 CPU core
+              memory: "2Gi" # 2 GB of memory
       volumes:
-      - hostPath:
-          path: /opt/ollama
-          type: DirectoryOrCreate
-        name: ollama-storage
+        - name: ollama-data-storage
+          persistentVolumeClaim:
+            claimName: ollama-data-pvc # Refers to the PVC defined above.
+        - name: open-webui-data-storage
+          persistentVolumeClaim:
+            claimName: open-webui-data-pvc # Refers to the PVC defined above.
 ---
-# Define the ollama service
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: ollama-web-service
-  namespace: ollama
+  name: open-webui-service
+  labels:
+    app: open-webui
 spec:
   selector:
-    name: ollama
+    app: open-webui # This service will target pods with the label 'app: open-webui'.
+  type: NodePort # Exposes the service on a port on each node's IP.
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-    name: web
-  type: LoadBalancer
+    - protocol: TCP
+      port: 3000 # The port that the service will be accessible on within the cluster.
+      targetPort: 8080 # The port on the container that the service forwards traffic to.
+      nodePort: 3000 # This explicitly sets the host port to 3000, matching your docker command.
+                    # If port 3000 is already in use on your node, k3s might not start this service.
+                    # You can remove 'nodePort: 3000' to let k3s assign a random available port (usually 30000-32767).
+                    # You would then find the assigned port using `kubectl get svc open-webui-service`.
