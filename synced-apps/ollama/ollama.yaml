@@ -45,7 +45,7 @@ spec:
           protocol: TCP
         env:
         - name: PRELOAD_MODELS
-          value: "phi4-mini:latest" #starcoder2 llama3.3 
+          value: "phi4-mini" #starcoder2 llama3.3 
         - name: OLLAMA_KEEP_ALIVE
           value: "8h"
         lifecycle:
