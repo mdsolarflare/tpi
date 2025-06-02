@@ -35,7 +35,7 @@ spec:
           limits: # It hasn't been an issue so far, but from practice at work, limits seem more trouble than they are worth.
             memory: 8Gi
             cpu: 6000m
-            ephemeral-storage: 900Gi
+            ephemeral-storage: 1500Gi
         volumeMounts:
           - mountPath: /root/.ollama
             name: ollama-storage
