@@ -23,12 +23,11 @@ sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-sudo docker run hello-world
-
 # Restart the Docker service and add your user to the docker group, so that you don't need to use the command with sudo .
 sudo systemctl restart docker
 sudo usermod -aG docker $USER
 newgrp docker
+docker run hello-world
 
 # Install open webui - https://docs.openwebui.com/getting-started/quick-start/
 docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
