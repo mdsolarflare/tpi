@@ -24,7 +24,11 @@ sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-
+# Restart the Docker service and add your user to the docker group, so that you don't need to use the command with sudo .
+sudo systemctl restart docker
+sudo usermod -aG docker $USER
+newgrp docker
+docker run hello-world
 
 docker run hello-world
 
