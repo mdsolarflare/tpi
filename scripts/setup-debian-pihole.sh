@@ -1,9 +1,7 @@
 #!/bin/bash
 # Usage
-
-# Post DietPi setup, pre-k3s
-# sed -i '1s/$/cgroup_memory=1 cgroup_enable=memory/' /boot/cmdline.txt
-# sudo apt install -y iptables
+# DietPi Debian - https://dietpi.com/#download
+# Debian        - https://www.debian.org/intro/why_debian
 
 # Install docker - https://docs.docker.com/engine/install/debian/
 for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
@@ -28,7 +26,6 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo systemctl restart docker
 sudo usermod -aG docker $USER
 newgrp docker
-docker run hello-world
 
 docker run hello-world
 
