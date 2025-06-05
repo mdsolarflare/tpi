@@ -32,4 +32,6 @@ docker run hello-world
 # Install pihole - https://docs.pi-hole.net/docker/
 # See compose file neighbor
 # Run docker compose up -d to build and start Pi-hole (on older systems, the syntax here may be docker-compose up -d)
+wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/scripts/pihole/docker-compose.yml
+docker compose up -d
 
