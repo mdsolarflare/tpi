@@ -30,5 +30,6 @@ newgrp docker
 docker run hello-world
 
 # Install pihole - https://docs.pi-hole.net/docker/
-
+# See compose file neighbor
+# Run docker compose up -d to build and start Pi-hole (on older systems, the syntax here may be docker-compose up -d)
 
