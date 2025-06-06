@@ -1,9 +1,32 @@
 # https://jellyfin.org/docs/general/installation/container
-# Setup Jellyfin per https://jellyfin.org/downloads/linux
-# If you do not have curl installed, you can use wget -q -O- instead of curl -s.
-# For more advanced users, the full steps can be found in the docs. (https://jellyfin.org/docs/general/installation/linux/#debuntu-debian-ubuntu-and-derivatives-using-apt)
-# Once installed, Jellyfin will be running as a service. Manage it with sudo systemctl {action} jellyfin.service or sudo service jellyfin {action}.
-curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: uid:gid
+    network_mode: 'host'
+    volumes:
+      - /path/to/config:/config
+      - /path/to/cache:/cache
+      - type: bind
+        source: /path/to/media
+        target: /media
+      - type: bind
+        source: /path/to/media2
+        target: /media2
+        read_only: true
+      # Optional - extra fonts to be used during transcoding with subtitle burn-in
+      - type: bind
+        source: /path/to/fonts
+        target: /usr/local/share/fonts/custom
+        read_only: true
+    restart: 'unless-stopped'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://example.com
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
 
 # 1. Install Jellyfin on your system with the installation method for your platform.^^
 #
@@ -25,7 +48,3 @@ curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 # (https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)
 # Only allow local connections and refrain from forwarding any ports.
 # Enjoy your media!
-
-
-
-
