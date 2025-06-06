@@ -1,0 +1,31 @@
+# https://jellyfin.org/docs/general/installation/container
+# Setup Jellyfin per https://jellyfin.org/downloads/linux
+# If you do not have curl installed, you can use wget -q -O- instead of curl -s.
+# For more advanced users, the full steps can be found in the docs. (https://jellyfin.org/docs/general/installation/linux/#debuntu-debian-ubuntu-and-derivatives-using-apt)
+# Once installed, Jellyfin will be running as a service. Manage it with sudo systemctl {action} jellyfin.service or sudo service jellyfin {action}.
+curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
+
+# 1. Install Jellyfin on your system with the installation method for your platform.^^
+#
+# 2. Edit the web configuration and adjust the options to fit your desired privacy level.
+#    https://jellyfin.org/docs/general/clients/web-config
+#
+# 3. Our defaults sacrifice some absolute self-hosting for often requested features.
+#    If this is concerning, please review the documentation and edit accordingly.
+#    Browse to http://SERVER_IP:8096 to access the included web client.
+#
+# 4. Follow the initial setup wizard.
+#
+# 5. Libraries and users can always be added later from the dashboard.
+# Remember the username and password so you can login after the setup.
+# Secure the server with a method of your choice.
+#
+# 6. Create an SSL certificate and add it on the Networking page.
+# Put your server behind a reverse proxy. 
+# (https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)
+# Only allow local connections and refrain from forwarding any ports.
+# Enjoy your media!
+
+
+
+
