@@ -32,6 +32,6 @@ docker run hello-world
 # Install pihole - https://docs.pi-hole.net/docker/
 # See compose file neighbor
 # Run docker compose up -d to build and start Pi-hole (on older systems, the syntax here may be docker-compose up -d)
-wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/scripts/jellyfin/docker-compose.yml
+wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/scripts/jellyfin/jellyfin-compose.yml
 # Don't forget to update your password :^) in the file
-docker compose up -d
+docker compose -f jellyfin-compose.yml up -d
