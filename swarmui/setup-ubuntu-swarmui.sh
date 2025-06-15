@@ -39,8 +39,9 @@ NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.8-1
 sudo apt-get install -y nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}
 
 # verify nvidia drivers - https://documentation.ubuntu.com/server/how-to/graphics/install-nvidia-drivers/index.html
-sudo ubuntu-drivers list --gpgpu
-sudo ubuntu-drivers install --gpgpu
+sudo apt update
+sudo apt upgrade
+sudo ubuntu-drivers autoinstall
 
 # configure for docker
 sudo nvidia-ctk runtime configure --runtime=docker\
