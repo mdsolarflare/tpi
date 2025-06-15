@@ -1,3 +1,7 @@
+## To launch
+
+Run `./launchtools/launch-standard-docker.sh`
+
 ## Linux
 
 - Install Docker Engine for Linux: https://docs.docker.com/engine/install/
