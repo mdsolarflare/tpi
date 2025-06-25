@@ -26,5 +26,5 @@ Once you look at the dockerhub it becomes more clear there's no real latest, you
 ```sh
 docker network create openwebui-ollama-bridge
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --network openwebui-ollama-bridge --name ollama ollama/ollama
-docker run -d -p 3000:8080 -v open-webui:/app/backend/data --network openwebui-ollama-bridge --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://ollama:11434 --network openwebui-ollama-bridge --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
