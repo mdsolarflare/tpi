@@ -25,5 +25,5 @@ Once you look at the dockerhub it becomes more clear there's no real latest, you
 
 ```sh
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-docker run -d --network=host -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://127.0.0.1:11434 --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://0.0.0.0:11434 --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
