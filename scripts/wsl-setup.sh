@@ -46,7 +46,7 @@ pip3 install --upgrade pip wheel
 # Install pytorch via the docker instructions at the same link above :/
 sudo apt install docker.io
 sudo docker pull rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
-sudo docker run -it \
+sudo docker run -it -d \
 --cap-add=SYS_PTRACE  \
 --security-opt seccomp=unconfined \
 --ipc=host \
