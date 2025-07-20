@@ -25,33 +25,38 @@ rm ~/miniconda3/miniconda.sh
 
 # create conda env
 conda create -n comfyenv
-conda activate comfyenv
+# conda activate comfyenv - i got in a mess and started over because i was using python 3.13.
+conda create -n comfyui_py312 python=3.12
 
 # clone repo
 git clone git@github.com:comfyanonymous/ComfyUI.git
 
+# install rocm stuff
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
+
 # Install pytorch via AMD instructions - https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html
+
 sudo apt install pipx
 sudo apt install python3-pip -y
 pip3 install --upgrade pip wheel
 
-#wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl
-#wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl
-#wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
-#wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl
-#pip3 uninstall torch torchvision pytorch-triton-rocm
-#pip3 install torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
-# idk, this shit aint work
+wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl
+wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl
+wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
+wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl
+pip3 uninstall torch torchvision pytorch-triton-rocm
+pip3 install torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
+# this shit fucked up proobably also because of the 3.13 issue?
 
-# Install pytorch via the docker instructions at the same link above :/
-sudo apt install docker.io
-sudo docker pull rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
-sudo docker run -it -d \
---cap-add=SYS_PTRACE  \
---security-opt seccomp=unconfined \
---ipc=host \
---shm-size 8G \
---device=/dev/dxg -v /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so -v /opt/rocm/lib/libhsa-runtime64.so.1:/opt/rocm/lib/libhsa-runtime64.so.1  \
-  rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
+# Install pytorch via the docker instructions at the same link above :/ but got some failures on the demo code :sad:
+#sudo apt install docker.io
+#sudo docker pull rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
+#sudo docker run -it -d \
+#--cap-add=SYS_PTRACE  \
+#--security-opt seccomp=unconfined \
+#--ipc=host \
+#--shm-size 8G \
+#--device=/dev/dxg -v /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so -v /opt/rocm/lib/libhsa-runtime64.so.1:/opt/rocm/lib/libhsa-runtime64.so.1  \
+#  rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
 
 
