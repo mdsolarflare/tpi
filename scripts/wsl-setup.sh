@@ -4,8 +4,9 @@
 sudo apt update
 wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
 sudo apt install ./amdgpu-install_6.4.60401-1_all.deb
-
-amdgpu-install -y --usecase=wsl,rocm --no-dkms
+sudo amdgpu-install --list-usecase
+amdgpu-install -y --usecase=wsl,rocm
+rocminfo
 
 # To verify:
 # rocminfo
@@ -38,9 +39,7 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 # Install pytorch via AMD instructions - https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html
 sudo apt install pipx
 # Install rocm via https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html
-sudo amdgpu-install --list-usecase
-amdgpu-install -y --usecase=wsl,rocm
-rocminfo
+# -- above --
 # Create env and enable it
 conda activate comfyui_py312
 # Install pytorch via https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html#
