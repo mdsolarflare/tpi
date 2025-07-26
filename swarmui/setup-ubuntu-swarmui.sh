@@ -33,7 +33,7 @@ sudo apt install -y git
 git clone https://github.com/mcmonkeyprojects/SwarmUI
 
 # verify nvidia container toolkit installation
-# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html 
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
@@ -42,7 +42,7 @@ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dear
 sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit nvidia-container-toolkit-base libnvidia-container-tools libnvidia-container1
 
-# configure for docker 
+# configure for docker -- nvidia-ctk not found?
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 
