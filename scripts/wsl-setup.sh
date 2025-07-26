@@ -34,42 +34,33 @@ git clone git@github.com:comfyanonymous/ComfyUI.git
 # install rocm stuff
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
 
+# From - https://github.com/comfyanonymous/ComfyUI/issues/6201 - helpful!
 # Install pytorch via AMD instructions - https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html
-
 sudo apt install pipx
+# Install rocm via https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html
+sudo amdgpu-install --list-usecase
+amdgpu-install -y --usecase=wsl,rocm
+rocminfo
+# Create env and enable it
+conda activate comfyui_py312
+# Install pytorch via https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html#
 sudo apt install python3-pip -y
 pip3 install --upgrade pip wheel
-
 wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl
 wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl
 wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
 wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl
 pip3 uninstall torch torchvision pytorch-triton-rocm
 pip3 install torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
-# this shit fucked up proobably also because of the 3.13 issue?
+location=$(pip show torch | grep Location | awk -F ": " '{print $2}')
+cd ${location}/torch/lib/
+rm libhsa-runtime64.so*
+conda install -c conda-forge gcc=12.1.0
 
-# Install pytorch via the docker instructions at the same link above :/ but got some failures on the demo code :sad:
-#sudo apt install docker.io
-#sudo docker pull rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
-#sudo docker run -it -d \
-#--cap-add=SYS_PTRACE  \
-#--security-opt seccomp=unconfined \
-#--ipc=host \
-#--shm-size 8G \
-#--device=/dev/dxg -v /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so -v /opt/rocm/lib/libhsa-runtime64.so.1:/opt/rocm/lib/libhsa-runtime64.so.1  \
-#  rocm/pytorch:rocm6.4.1_ubuntu24.04_py3.12_pytorch_release_2.6.0
+# Various verification tasks, should all pass
+python3 -c 'import torch' 2> /dev/null && echo 'Success' || echo 'Failure'
+python3 -c 'import torch; print(torch.cuda.is_available())'
+python3 -c "import torch; print(f'device name [0]:', torch.cuda.get_device_name(0))"
+python3 -m torch.utils.collect_env
 
-# idk shits fucked
-# https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/quick-start.html
-wget https://repo.radeon.com/amdgpu-install/6.4.2/ubuntu/noble/amdgpu-install_6.4.60402-1_all.deb
-sudo apt install ./amdgpu-install_6.4.60402-1_all.deb
-sudo apt update
-sudo apt install python3-setuptools python3-wheel
-sudo usermod -a -G render,video $LOGNAME # Add the current user to the render and video groups
-sudo apt install rocm
-
-wget https://repo.radeon.com/amdgpu-install/6.4.2/ubuntu/noble/amdgpu-install_6.4.60402-1_all.deb
-sudo apt install ./amdgpu-install_6.4.60402-1_all.deb
-sudo apt update
-sudo apt install "linux-headers-$(uname -r)" "linux-modules-extra-$(uname -r)"
-sudo apt install amdgpu-dkms
+# python main.py
