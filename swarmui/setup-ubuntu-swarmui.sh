@@ -55,4 +55,5 @@ sudo systemctl restart docker
 
 
 # validation
-# sudo docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
+# sudo docker run --rm --gpus all ubuntu nvidia-smi
+# --runtime=nvidia might be needed to run a container if the nvidia-ctk config update and docker restart had issues...
