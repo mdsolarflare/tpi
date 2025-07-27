@@ -32,6 +32,7 @@ Once you look at the dockerhub it becomes more clear there's no real latest, you
 ```sh
 # For CUDA
 docker run -d -p 3000:8080 --gpus all -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:cuda
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
 
 
 
