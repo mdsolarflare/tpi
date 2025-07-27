@@ -32,6 +32,13 @@ sudo apt install -y git
 # Clone! swarmui
 git clone https://github.com/mcmonkeyprojects/SwarmUI
 
+# verify nvidia drivers - https://documentation.ubuntu.com/server/how-to/graphics/install-nvidia-drivers/index.html
+sudo apt update
+sudo apt upgrade
+sudo ubuntu-drivers autoinstall
+sudo reboot
+# Unfortunately requires reboot.
+
 # verify nvidia container toolkit installation
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html 
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
@@ -46,13 +53,6 @@ sudo apt-get install -y nvidia-container-toolkit nvidia-container-toolkit-base l
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 
-
-# verify nvidia drivers - https://documentation.ubuntu.com/server/how-to/graphics/install-nvidia-drivers/index.html
-sudo apt update
-sudo apt upgrade
-sudo ubuntu-drivers autoinstall
-sudo reboot
-# Unfortunately requires reboot.
 
 # validation
 # sudo docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
