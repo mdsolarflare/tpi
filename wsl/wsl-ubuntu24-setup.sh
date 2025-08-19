@@ -41,14 +41,14 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 rm ~/miniconda3/miniconda.sh
 
-# Note, git was already installed but got an opaque permissions error that was due to an ssh error. Not sure why it was forcing ssh.
+source ~/miniconda3/bin/activate
+conda init --all
 
 # https://docs.comfy.org/installation/manual_install#amd
-
 # create conda env
-conda create -n comfyenv
-# conda activate comfyenv - i got in a mess and started over because i was using python 3.13.
+# i got in a mess and started over because i was using python 3.13.
 conda create -n comfyui_py312 python=3.12
+conda activate comfyui_py312
 
 # clone repo
 git clone git@github.com:comfyanonymous/ComfyUI.git
@@ -61,8 +61,7 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 sudo apt install pipx
 # Install rocm via https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html
 # -- above --
-# Create env and enable it
-conda activate comfyui_py312
+
 # Install pytorch via https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html#
 sudo apt install python3-pip -y
 pip3 install --upgrade pip wheel
@@ -83,4 +82,8 @@ python3 -c 'import torch; print(torch.cuda.is_available())'
 python3 -c "import torch; print(f'device name [0]:', torch.cuda.get_device_name(0))"
 python3 -m torch.utils.collect_env
 
+cd ~/ComfyUI
+pip install -r requirements.txt
+ln -s /mnt/c/Users/username/Desktop/models/ ./
+ln -s /mnt/c/Users/username/Desktop/output/ ./
 # python main.py

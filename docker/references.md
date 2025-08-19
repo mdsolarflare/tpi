@@ -8,15 +8,20 @@ scp local_file user@remote_host:remote_directory
 ```
 
 
-## Running a ollama rocm container
+# Install ollama
+
+https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image
 
 ```sh
+# Update by pulling ollama/ollama, nvidia doesn't have a special tag like rocm
+
+# Running in default yolo mode
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+# Running in AMD ROCm framework
 docker run --privileged -d --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama:rocm
-```
 
-## Running a ollama cuda container
-
-```sh
+# Running in Nvidia CUDA framework
 docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
@@ -27,6 +32,9 @@ docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ol
 Especially the bit about using the nvidia/cuda images. Otherwise you have to install all the bits yourself. I tried "nvidia/cuda" and it failed.
 Once you look at the dockerhub it becomes more clear there's no real latest, you need to target a guest OS.
 
+
+
+# Install open webui - https://docs.openwebui.com/getting-started/quick-start/
 ## Setup OpenWEBUI Speedboost -- REDOS this?
 
 ```sh

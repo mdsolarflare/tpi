@@ -32,6 +32,15 @@ docker run hello-world
 # Install pihole - https://docs.pi-hole.net/docker/
 # See compose file neighbor
 # Run docker compose up -d to build and start Pi-hole (on older systems, the syntax here may be docker-compose up -d)
-wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/scripts/jellyfin/jellyfin-compose.yml
+#wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/scripts/jellyfin/jellyfin-compose.yml
 # Don't forget to update your password :^) in the file
-docker compose -f jellyfin-compose.yml up -d
+#docker compose -f jellyfin-compose.yml up -d
+
+# https://jellyfin.org/docs/general/installation/container
+docker pull jellyfin/jellyfin
+docker volume create jellyfin-config
+docker volume create jellyfin-cache
+
+# source is the host location, destination is the guest location
+docker run -d --name jellyfin  --user 1000:1000  --net=host  --volume jellyfin-config:/config --volume jellyfin-cache:/cache --mount type=bind,source=/media-pool,target=/media --restart=unless-stopped jellyfin/jellyfin
+# https://jellyfin.org/docs/general/post-install/setup-wizard
