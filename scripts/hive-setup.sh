@@ -1,19 +1,18 @@
 # Install ZFS - https://ubuntu.com/tutorials/setup-zfs-storage-pool#1-overview
-# https://www.raidz-calculator.com/raidz-types-reference.aspx
 sudo apt update
 # RPI 5
 # sudo apt install raspberrypi-kernel-headers zfs-dkms zfsutils-linux -y
 # Intel N150
 sudo apt install zfsutils-linux
-sudo apt full-upgrade -y
-sudo reboot
+# sudo apt full-upgrade -y
+# sudo reboot
 
 # Once rebooted
 # sudo apt autoremove && sudo apt clean
 
 # Setup ZFS
 # Verify ZFS is loaded
-dmesg | grep ZFS
+whereis zfs
 
 # Inspect disks
 lsblk
@@ -36,7 +35,8 @@ lsblk
 
 # If it's bad, fix it!
 # Otherwise, create the pool. 
-sudo zpool create media raidz1 nvme0n1 nvme1n1 nvme2n1 nvme3n1 -f
+# https://www.raidz-calculator.com/raidz-types-reference.aspx
+sudo zpool create <pool name> raidz1 drive1 drive2 drive3 drive4 -f
 
 zfs list
 #NAME    USED  AVAIL  REFER  MOUNTPOINT
