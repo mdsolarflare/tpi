@@ -41,3 +41,6 @@ sudo zpool create media raidz1 nvme0n1 nvme1n1 nvme2n1 nvme3n1 -f
 zfs list
 #NAME    USED  AVAIL  REFER  MOUNTPOINT
 #media   136K  2.63T  32.9K  /media
+sudo chown myusername /media
+sudo chmod -R u+rw /media
+
