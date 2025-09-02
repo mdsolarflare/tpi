@@ -1,6 +1,9 @@
-# Install ZFS
+# Install ZFS - https://ubuntu.com/tutorials/setup-zfs-storage-pool#1-overview
 sudo apt update
-sudo apt install raspberrypi-kernel-headers zfs-dkms zfsutils-linux -y
+# RPI 5
+# sudo apt install raspberrypi-kernel-headers zfs-dkms zfsutils-linux -y
+# Intel N150
+sudo apt install zfsutils-linux
 sudo apt full-upgrade -y
 sudo reboot
 
