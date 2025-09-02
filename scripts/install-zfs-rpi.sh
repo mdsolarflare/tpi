@@ -1,4 +1,5 @@
 # Install ZFS - https://ubuntu.com/tutorials/setup-zfs-storage-pool#1-overview
+# https://www.raidz-calculator.com/raidz-types-reference.aspx
 sudo apt update
 # RPI 5
 # sudo apt install raspberrypi-kernel-headers zfs-dkms zfsutils-linux -y
