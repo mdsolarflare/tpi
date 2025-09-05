@@ -36,9 +36,10 @@ docker run hello-world
 # Don't forget to update your password :^) in the file
 #docker compose -f jellyfin-compose.yml up -d
 
+# https://jellyfin.org/docs/general/installation/container
 docker pull jellyfin/jellyfin
 docker volume create jellyfin-config
 docker volume create jellyfin-cache
 
 docker run -d --name jellyfin  --user 1000:1000  --net=host  --volume jellyfin-config:/config --volume jellyfin-cache:/cache --mount type=bind,source=/media,target=/media --restart=unless-stopped jellyfin/jellyfin
- 
+# https://jellyfin.org/docs/general/post-install/setup-wizard
