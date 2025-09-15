@@ -13,6 +13,8 @@ scp local_file user@remote_host:remote_directory
 https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image
 
 ```sh
+# Update by pulling ollama/ollama, nvidia doesn't have a special tag like rocm
+
 # Running in default yolo mode
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 
