@@ -40,14 +40,14 @@ mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 rm ~/miniconda3/miniconda.sh
+# NOTE: NEED TO RESHELL AFTER
 
 # Note, git was already installed but got an opaque permissions error that was due to an ssh error. Not sure why it was forcing ssh.
 
 # https://docs.comfy.org/installation/manual_install#amd
 
 # create conda env
-conda create -n comfyenv
-# conda activate comfyenv - i got in a mess and started over because i was using python 3.13.
+# i got in a mess and started over because i was using python 3.13.
 conda create -n comfyui_py312 python=3.12
 
 # clone repo
