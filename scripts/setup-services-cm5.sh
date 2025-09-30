@@ -4,8 +4,11 @@
 # Debian        - https://www.debian.org/intro/why_debian
 
 # Install wireguard via dietpi-software
+# -- reference: https://www.wireguard.com/install/
 # Install openssh server via dietpi-software
 # Install docker via dietpi-software
+# Install duckdns via dietpi-config
+# -- For duckdns - https://www.duckdns.org/install.jsp OR It's in dietpi-config under network miscellaneous
 
 # Restart the Docker service and add your user to the docker group, so that you don't need to use the command with sudo .
 sudo systemctl restart docker
