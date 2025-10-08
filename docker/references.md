@@ -47,3 +47,15 @@ docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/wa
 docker network create openwebui-ollama-bridge
 docker run -d -p 3000:8080 -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://ollama:11434 --network openwebui-ollama-bridge --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
+
+full shutdown restart notes for later:
+
+```sh
+docker start ollama
+docker start open-webui
+SwarmUI/launchtools/launch-standard-docker.sh &
+docker network connect bridge-to-open-webui ollama
+docker network connect bridge-to-open-webui open-webui
+docker network connect bridge-to-open-webui swarmui
+```
+
