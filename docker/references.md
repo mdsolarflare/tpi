@@ -22,7 +22,9 @@ docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 docker run --privileged -d --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama:rocm
 
 # Running in Nvidia CUDA framework
-docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker run -d --restart unless-stopped --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+docker run -d --restart unless-stopped --name watchtower-ollama --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower -i 300 ollama
 ```
 
 ## Running Nvidia GPUs on docker
@@ -39,9 +41,11 @@ Once you look at the dockerhub it becomes more clear there's no real latest, you
 
 ```sh
 # For CUDA
-docker run -d -p 3000:8080 --gpus all -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:cuda
-docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
-
+docker run -d --restart unless-stopped -p 3000:8080 --gpus all -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:cuda
+# One time update
+docker run --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+# continuous
+docker run -d --restart unless-stopped --name watchtower-openwebui --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower -i 300 open-webui
 
 
 docker network create openwebui-ollama-bridge
@@ -51,7 +55,9 @@ docker run -d -p 3000:8080 -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=ht
 full shutdown restart notes for later:
 
 ```sh
+# If didn't auto-restart
 docker start ollama
+# If didn't auto-restart
 docker start open-webui
 SwarmUI/launchtools/launch-standard-docker.sh &
 docker network connect bridge-to-open-webui ollama
