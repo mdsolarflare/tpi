@@ -16,6 +16,9 @@ volumes:
   caddy_data:
   caddy_config:
 
+networks:
+  - mesh
+
 # the name default_docker_bridge is arbitrary, docker creates a "bridge" network by default, unless you specified something else, it will be this.
 networks:
   mesh_bridge:
