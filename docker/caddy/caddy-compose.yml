@@ -21,4 +21,5 @@ volumes:
 # https://docs.docker.com/compose/how-tos/networking/
 networks:
   network1:
+    name: mesh
     external: true
