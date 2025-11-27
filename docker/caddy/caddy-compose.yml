@@ -11,6 +11,8 @@ services:
       - ./site:/srv
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - network1
 
 volumes:
   caddy_data:
@@ -20,4 +22,3 @@ volumes:
 networks:
   network1:
     external: true
-    name: mesh
