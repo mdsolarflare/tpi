@@ -15,4 +15,9 @@ services:
 volumes:
   caddy_data:
   caddy_config:
-  
+
+# the name default_docker_bridge is arbitrary, docker creates a "bridge" network by default, unless you specified something else, it will be this.
+networks:
+  default_docker_bridge:
+    external: true
+    name: bridge
