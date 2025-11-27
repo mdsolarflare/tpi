@@ -60,8 +60,8 @@ docker start ollama
 # If didn't auto-restart
 docker start open-webui
 SwarmUI/launchtools/launch-standard-docker.sh &
-docker network connect bridge-to-open-webui ollama
-docker network connect bridge-to-open-webui open-webui
-docker network connect bridge-to-open-webui swarmui
+docker network connect bridge ollama
+docker network connect bridge open-webui
+docker network connect bridge swarmui
 ```
 
