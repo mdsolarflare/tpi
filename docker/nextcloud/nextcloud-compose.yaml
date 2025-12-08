@@ -19,3 +19,5 @@ services:
 volumes:
   nextcloud_aio_mastercontainer:
     name: nextcloud_aio_mastercontainer
+  nextcloud_aio_backupdir:
+    name: nextcloud_aio_backupdir
