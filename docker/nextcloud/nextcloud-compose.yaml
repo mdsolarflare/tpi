@@ -1,0 +1,21 @@
+services:
+  nextcloud-aio-mastercontainer:
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    container_name: nextcloud-aio-mastercontainer
+    restart: always
+    init: true # Replaces --init and helps manage process signals
+    ports:
+      # HOST_PORT:CONTAINER_PORT
+      # I have remapped the Host ports (left side) to avoid conflicts.
+      # You can change the left numbers to whatever free ports you have.
+      
+      - "4080:80"     # HTTP: Remapped to 9080 (was 80)
+      - "4081:8080"   # AIO Interface: Remapped to 9081 (was 8080)
+      - "4443:8443"   # HTTPS: Remapped to 9443 (was 8443)
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Critical for AIO to spawn sibling containers
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
