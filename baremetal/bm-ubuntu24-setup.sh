@@ -29,9 +29,6 @@ docker run hello-world
 # verify git is installed
 sudo apt install -y git
 
-# Clone! swarmui
-git clone https://github.com/mcmonkeyprojects/SwarmUI
-
 # verify nvidia drivers - https://documentation.ubuntu.com/server/how-to/graphics/install-nvidia-drivers/index.html
 sudo apt update
 sudo apt upgrade
