@@ -11,7 +11,7 @@ newgrp docker
 docker run hello-world
 
 # Install pihole - https://docs.pi-hole.net/docker/
-# See compose file neighbor
+# Install linuxserver/wireguard - https://docs.linuxserver.io/images/docker-wireguard/
 # Run docker compose up -d to build and start Pi-hole (on older systems, the syntax here may be docker-compose up -d)
 wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/docker/virtualized-services.yml
 # Don't forget to update your password :^) in the file
