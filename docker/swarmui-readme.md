@@ -6,6 +6,36 @@
 git clone https://github.com/mcmonkeyprojects/SwarmUI
 ```
 
+Depending on ARM vs X86_64, I have needed these two diffs before
+
+```diff
+--- a/launchtools/docker-standard-inner.sh
++++ b/launchtools/docker-standard-inner.sh
+@@ -8,7 +8,7 @@ cd /SwarmUI
+ if [[ "$1" == "fixch" ]]
+ then
+     echo "Fixing perms, owning to UID $2"
+-    chown -R $2:$2 /SwarmUI/dlbackend /SwarmUI/Data /SwarmUI/src /SwarmUI/Output
++    chown -R $2:$2 /SwarmUI/dlbackend /SwarmUI/Data /SwarmUI/src /SwarmUI/Output /SwarmUI/Models
+     chown $2:$2 /SwarmUI
+     # Scrap any database files rather than reperm (to reduce conflicts, they regen anyway)
+     rm /SwarmUI/Models/**/model_metadata.ldb 2> /dev/null
+diff --git a/launchtools/launch-standard-docker.sh b/launchtools/launch-standard-docker.sh
+index 4267b994..9a0c3b3e 100755
+--- a/launchtools/launch-standard-docker.sh
++++ b/launchtools/launch-standard-docker.sh
+@@ -30,7 +30,7 @@ docker run -it \
+     -v "$PWD/Models:/SwarmUI/Models" \
+     -v "$PWD/Output:/SwarmUI/Output" \
+     -v "$PWD/src/BuiltinExtensions/ComfyUIBackend/CustomWorkflows:/SwarmUI/src/BuiltinExtensions/ComfyUIBackend/CustomWorkflows" \
+-    --gpus=all -p 7801:7801 swarmui $POSTARG
++    --runtime=nvidia --gpus=all -p 7801:7801 swarmui $POSTARG
+ 
+ if [ $? == 42 ]; then
+     exec "$SCRIPT_DIR/launch-standard-docker.sh" $@
+(END)
+```
+
 ## For Original Docs
 
 See https://github.com/mcmonkeyprojects/SwarmUI/blob/master/docs/Docker.md
