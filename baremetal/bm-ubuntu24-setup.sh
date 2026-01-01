@@ -54,3 +54,19 @@ sudo systemctl restart docker
 # validation
 # sudo docker run --rm --gpus all ubuntu nvidia-smi
 # --runtime=nvidia might be needed to run a container if the nvidia-ctk config update and docker restart had issues...
+
+# Larger swap config for model loading
+sudo swapon --show
+
+# Turn off the existing swap file: 
+sudo swapoff -a
+
+# Create a new file (e.g., 32GB): 
+sudo fallocate -l 32G /swap.img
+sudo chmod 600 /swapfile
+
+# Format it as swap: 
+sudo mkswap /swapfile
+
+# Activate it: 
+sudo swapon /swapfile
