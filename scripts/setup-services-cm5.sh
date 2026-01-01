@@ -14,6 +14,7 @@ docker run hello-world
 # Install linuxserver/wireguard - https://docs.linuxserver.io/images/docker-wireguard/
 # Run docker compose up -d to build and start Pi-hole (on older systems, the syntax here may be docker-compose up -d)
 wget https://raw.githubusercontent.com/mdsolarflare/tpi/refs/heads/main/docker/virtualized-services.yml
+mv virtualized-services.yml compose.yml # i think?
 # Don't forget to update your password :^) in the file
 docker compose up -d
 
