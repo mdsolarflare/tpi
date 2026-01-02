@@ -65,3 +65,15 @@ docker network connect mesh open-webui
 docker network connect mesh swarmui
 ```
 
+Install for jellyfin
+
+```sh
+# https://jellyfin.org/docs/general/installation/container
+docker pull jellyfin/jellyfin
+docker volume create jellyfin-config
+docker volume create jellyfin-cache
+
+# source is the host location, destination is the guest location
+docker run -d --name jellyfin  --user 1000:1000  --net=host  --volume jellyfin-config:/config --volume jellyfin-cache:/cache --mount type=bind,source=/media-pool,target=/media --restart=unless-stopped jellyfin/jellyfin
+# https://jellyfin.org/docs/general/post-install/setup-wizard
+```
