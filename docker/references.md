@@ -77,3 +77,15 @@ docker volume create jellyfin-cache
 docker run -d --name jellyfin  --user 1000:1000  --net=host  --volume jellyfin-config:/config --volume jellyfin-cache:/cache --mount type=bind,source=/media-pool,target=/media --restart=unless-stopped jellyfin/jellyfin
 # https://jellyfin.org/docs/general/post-install/setup-wizard
 ```
+
+
+VLLM docker quickstart 
+```sh
+docker run --runtime nvidia --gpus all \
+    -v ~/.cache/huggingface:/root/.cache/huggingface \
+    --env "HF_TOKEN=$HF_TOKEN" \
+    -p 8000:8000 \
+    --ipc=host \
+    vllm/vllm-openai:latest \
+    --model unsloth/gpt-oss-20b
+```
