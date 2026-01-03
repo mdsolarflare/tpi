@@ -81,7 +81,7 @@ docker run -d --name jellyfin  --user 1000:1000  --net=host  --volume jellyfin-c
 
 VLLM docker quickstart 
 ```sh
-docker run --runtime nvidia --gpus all \
+docker run -d --runtime nvidia --gpus all --name vllm \
     -v ~/.cache/huggingface:/root/.cache/huggingface \
     --env "HF_TOKEN=$HF_TOKEN" \
     -p 8000:8000 \
