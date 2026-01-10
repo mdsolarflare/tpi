@@ -3,11 +3,13 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
-    user: uid:gid
-    network_mode: 'host'
+    user: uid:gid # find with id or "id -u <username>" and "id -g <username>" on linux / mac
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
     volumes:
-      - /path/to/config:/config
-      - /path/to/cache:/cache
+      - jellyfin_config:/config
+      - jellyfin_cache:/cache
       - type: bind
         source: /path/to/media
         target: /media
