@@ -50,3 +50,9 @@ services:
 # (https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)
 # Only allow local connections and refrain from forwarding any ports.
 # Enjoy your media!
+
+volumes:
+  jellyfin_config:
+    driver: local
+  jellyfin_cache:
+    driver: local
