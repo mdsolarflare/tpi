@@ -14,7 +14,7 @@ Is there a verifiable update?
 docker pull ollama/ollama:latest
 docker stop ollama
 docker rm ollama
-docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker run -d --restart unless-stopped --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
 ## AMD
@@ -23,7 +23,7 @@ docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ol
 docker pull ollama/ollama:latest
 docker stop ollama
 docker rm ollama
-docker run -d --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama:rocm
+docker run -d --restart unless-stopped --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama:rocm
 ```
 
 # Running Nvidia GPUs on docker
