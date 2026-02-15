@@ -46,20 +46,15 @@ scp local_file user@remote_host:remote_directory
 ```
 
 
-# Install open webui - https://docs.openwebui.com/getting-started/quick-start/
+# Install/Update open webui - https://docs.openwebui.com/getting-started/quick-start/
 ## Setup OpenWEBUI Speedboost -- REDOS this?
 
 ```sh
 # For CUDA
+docker rm -f open-webui
+docker pull ghcr.io/open-webui/open-webui:cuda
 docker run -d --restart unless-stopped -p 3000:8080 --gpus all -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:cuda
-# One time update
-docker run --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
-# continuous
-docker run -d --restart unless-stopped --name watchtower-openwebui --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower -i 300 open-webui
-
-
-docker network create openwebui-ollama-bridge
-docker run -d -p 3000:8080 -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://ollama:11434 --network openwebui-ollama-bridge --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+docker network connect mesh open-webui
 ```
 
 full shutdown restart notes for later:
